@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sizzano — Scheda unica beni APOSTOLO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBFBF8; --panel:#FFFFFF; --ink:#1C1E22; --muted:#6B6E74; --faint:#9A9C9F;
+    --hair:#E2E0D8; --hair2:#CBC8BC; --band:#2C4456; --band-d:#223544;
+    --agri:#B79433; --agri-bg:#F6EFD6; --bosco:#5F7E4C; --bosco-bg:#E5EDDD;
+    --edif:#B36A3C; --edif-bg:#F4E5D8; --sig:#B5483C;
+    --row-hover:#F4F2EA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:var(--paper);
+    line-height:1.45; font-size:14px;
+    background-image:linear-gradient(var(--hair) 1px,transparent 1px),linear-gradient(90deg,var(--hair) 1px,transparent 1px);
+    background-size:26px 26px; background-position:-1px -1px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 80px}
+
+  /* ---- Masthead ---- */
+  header.mast{
+    background:var(--band); color:#EFEDE6; margin:0 -20px 0; padding:22px 28px 20px;
+    border-bottom:3px solid var(--sig);
+  }
+  .mast-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .eyebrow{font-family:'Space Grotesk';font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#A9C3D2;font-weight:500}
+  h1{font-family:'Space Grotesk';font-weight:600;font-size:30px;letter-spacing:-.01em;line-height:1.05;margin-top:4px}
+  h1 .c{color:#fff}
+  .mast-meta{font-family:'IBM Plex Mono';font-size:11.5px;color:#BFD2DC;text-align:right;line-height:1.7}
+  .mast-meta b{color:#fff;font-weight:500}
+  .mast-sub{margin-top:12px;font-size:12.5px;color:#C9D7DF;max-width:640px}
+  .mast-sub b{color:#fff;font-weight:600}
+
+  /* ---- Summary strip ---- */
+  .summary{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border:1px solid var(--hair2);border-top:none;background:var(--panel)}
+  .scell{padding:14px 16px;border-right:1px solid var(--hair)}
+  .scell:last-child{border-right:none}
+  .scell .lab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-family:'Space Grotesk';font-weight:500}
+  .scell .val{font-family:'IBM Plex Mono';font-size:23px;font-weight:500;margin-top:5px;letter-spacing:-.02em}
+  .scell .val small{font-size:12px;color:var(--faint);font-weight:400}
+
+  /* ---- Foglio navigator (signature) ---- */
+  .section-lab{display:flex;align-items:baseline;gap:12px;margin:32px 0 12px}
+  .section-lab h2{font-family:'Space Grotesk';font-weight:600;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+  .section-lab .ln{flex:1;height:1px;background:var(--hair2)}
+  .section-lab .hint{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono'}
+
+  .fogli{display:flex;gap:10px;flex-wrap:wrap}
+  .ftile{
+    flex:1 1 140px;min-width:140px;background:var(--panel);border:1px solid var(--hair2);
+    padding:12px 14px;cursor:pointer;transition:.12s;position:relative;text-align:left;
+  }
+  .ftile:hover{border-color:var(--band);background:#fff;transform:translateY(-1px)}
+  .ftile.on{border-color:var(--band);border-width:1px;box-shadow:inset 0 0 0 1px var(--band);background:#fff}
+  .ftile .fnum{font-family:'IBM Plex Mono';font-size:11px;color:var(--muted);letter-spacing:.05em}
+  .ftile .fno{font-family:'Space Grotesk';font-size:28px;font-weight:700;line-height:1;margin:3px 0 2px}
+  .ftile .fcount{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono'}
+  .ftile .fzone{font-size:10.5px;color:var(--ink);margin-top:7px;line-height:1.3}
+  .ftile .corner{position:absolute;top:8px;right:10px;font-family:'IBM Plex Mono';font-size:10px;color:var(--faint)}
+
+  /* ---- Controls ---- */
+  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0 10px}
+  .search{position:relative;flex:1 1 230px;min-width:200px}
+  .search input{
+    width:100%;font-family:'IBM Plex Mono';font-size:13px;padding:9px 12px 9px 30px;
+    border:1px solid var(--hair2);background:var(--panel);color:var(--ink);
+  }
+  .search input:focus{outline:2px solid var(--band);outline-offset:-1px;border-color:var(--band)}
+  .search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);opacity:.45}
+  .seg{display:flex;border:1px solid var(--hair2);background:var(--panel)}
+  .seg button{
+    font-family:'Space Grotesk';font-weight:500;font-size:12px;letter-spacing:.02em;
+    padding:8px 14px;background:none;border:none;border-right:1px solid var(--hair);cursor:pointer;color:var(--muted)
+  }
+  .seg button:last-child{border-right:none}
+  .seg button.on{background:var(--band);color:#fff}
+  .btn-print{
+    font-family:'Space Grotesk';font-weight:500;font-size:12px;padding:8px 14px;
+    background:var(--panel);border:1px solid var(--hair2);cursor:pointer;color:var(--ink);display:flex;gap:7px;align-items:center
+  }
+  .btn-print:hover{background:#fff;border-color:var(--band)}
+  .resetf{font-size:11px;color:var(--sig);background:none;border:none;cursor:pointer;font-family:'IBM Plex Mono';padding:4px 6px}
+
+  /* ---- Table ---- */
+  .tbl-wrap{border:1px solid var(--hair2);background:var(--panel);overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{
+    font-family:'Space Grotesk';font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1.5px solid var(--hair2);background:#FAF9F4;
+    white-space:nowrap;cursor:pointer;user-select:none
+  }
+  thead th.num{text-align:right}
+  thead th .ar{opacity:.4;font-size:9px}
+  tbody tr{border-bottom:1px solid var(--hair);cursor:pointer}
+  tbody tr:hover{background:var(--row-hover)}
+  tbody tr.open{background:#F4F2EA}
+  td{padding:9px 12px;vertical-align:top}
+  td.mono{font-family:'IBM Plex Mono';font-size:12.5px}
+  td.num{font-family:'IBM Plex Mono';font-size:12.5px;text-align:right;white-space:nowrap}
+  .fp{font-family:'IBM Plex Mono';font-weight:500}
+  .fp .sep{color:var(--faint)}
+  .qual{font-size:12px}
+  .qual .cls{color:var(--faint);font-family:'IBM Plex Mono';font-size:11px}
+  .chip{display:inline-block;font-size:10px;font-weight:600;font-family:'Space Grotesk';letter-spacing:.03em;
+    padding:2px 7px;border-radius:2px;white-space:nowrap}
+  .chip.agri{background:var(--agri-bg);color:var(--agri)}
+  .chip.bosco{background:var(--bosco-bg);color:var(--bosco)}
+  .chip.edif{background:var(--edif-bg);color:var(--edif)}
+  .gtag{font-family:'IBM Plex Mono';font-size:11px;color:var(--band);font-weight:500}
+  .exp-ind{color:var(--faint);font-family:'IBM Plex Mono';font-size:11px;transition:.15s;display:inline-block}
+  tr.open .exp-ind{transform:rotate(90deg);color:var(--band)}
+
+  /* detail row */
+  tr.detail td{padding:0;background:#F8F6EF;border-bottom:1px solid var(--hair2)}
+  .detail-in{padding:14px 18px 16px;display:grid;grid-template-columns:1.3fr 1fr;gap:24px}
+  .det-block .dh{font-family:'Space Grotesk';font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600}
+  .owners{font-family:'IBM Plex Mono';font-size:12px}
+  .owners .ow{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--hair2)}
+  .owners .ow:last-child{border-bottom:none}
+  .owners .ow .nm{color:var(--ink)}
+  .owners .ow .nm.ext{color:var(--sig)}
+  .owners .ow .q{font-weight:600}
+  .porz-list{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--muted);line-height:1.7}
+  .porz-list .pq{color:var(--ink)}
+  .prov{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5}
+  .prov b{color:var(--ink);font-weight:600}
+  .det-meta{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--muted);line-height:1.8;margin-top:8px}
+  .det-meta b{color:var(--ink);font-weight:500}
+
+  .nores{padding:30px;text-align:center;color:var(--muted);font-family:'IBM Plex Mono';font-size:13px}
+  .tfoot{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-top:1.5px solid var(--hair2);background:#FAF9F4;font-family:'IBM Plex Mono';font-size:12px}
+  .tfoot .ftot{font-weight:600}
+  .tfoot .muted{color:var(--muted)}
+
+  /* ---- PRG legend ---- */
+  .prg-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;border:1px solid var(--hair2);background:var(--panel);padding:20px}
+  .prg-col h3{font-family:'Space Grotesk';font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--hair2)}
+  .leg{display:flex;align-items:flex-start;gap:10px;padding:5px 0;font-size:12.5px}
+  .sw{width:22px;height:14px;flex-shrink:0;margin-top:2px;border:1px solid rgba(0,0,0,.2)}
+  .leg .lt{line-height:1.35}
+  .leg .lt .code{font-family:'IBM Plex Mono';font-size:11px;color:var(--muted)}
+  .prg-note{margin-top:14px;padding:14px 16px;background:#FFF8E8;border:1px solid #EAD9A8;font-size:12px;line-height:1.55}
+  .prg-note b{font-weight:600}
+  .prg-note .ic{color:var(--agri);font-weight:700}
+
+  footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--hair2);font-size:11px;color:var(--faint);font-family:'IBM Plex Mono';line-height:1.7}
+  footer b{color:var(--muted);font-weight:500}
+
+  @media (max-width:820px){
+    .summary{grid-template-columns:repeat(3,1fr)}
+    .scell:nth-child(3){border-right:none}
+    .scell:nth-child(1),.scell:nth-child(2),.scell:nth-child(3){border-bottom:1px solid var(--hair)}
+    .detail-in{grid-template-columns:1fr}
+    .prg-grid{grid-template-columns:1fr}
+    h1{font-size:23px}
+    .hide-sm{display:none}
+    td.num.hide-sm{display:none}
+  }
+  @media print{
+    body{background:#fff}
+    .controls,.btn-print,.exp-ind,.section-lab .hint,.resetf{display:none!important}
+    .ftile{break-inside:avoid}
+    tr.detail{display:table-row!important}
+    tr.detail td{background:#fff}
+    .tbl-wrap,.prg-grid,.summary{box-shadow:none}
+    header.mast{background:var(--band)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .chip,.sw,.summary,.ftile,thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="mast-row">
+    <div>
+      <div class="eyebrow">Comune di Sizzano · Prov. di Novara · Cod. I767</div>
+      <h1>Scheda unica <span class="c">beni immobili</span></h1>
+    </div>
+    <div class="mast-meta">
+      Intestatari: <b>APOSTOLO</b> (Alberto, Bruno,<br>Lorenzo, Marco, Sergio) + terzi<br>
+      Fonti: <b>Visure · Estratti catastali · PRG</b><br>
+      Aggiornamento atti: <b>30/06/2026</b>
+    </div>
+  </div>
+  <div class="mast-sub">
+    Consolidamento delle sole particelle site in <b>Sizzano</b>, deduplicate dalle cinque visure per soggetto.
+    Set verificato: totali di superficie e rendita coincidono con le proprietà a Sizzano della visura di Bruno (titolare di quota in tutte le particelle).
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="summary" id="summary"></div>
+
+  <div class="section-lab">
+    <h2>Fogli catastali</h2><span class="ln"></span>
+    <span class="hint">tocca un foglio per filtrare</span>
+  </div>
+  <div class="fogli" id="fogli"></div>
+
+  <div class="controls">
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input id="q" type="text" placeholder="cerca particella, qualità, indirizzo, intestatario…" autocomplete="off">
+    </div>
+    <div class="seg" id="tipoSeg">
+      <button data-t="all" class="on">Tutti</button>
+      <button data-t="terreno">Terreni</button>
+      <button data-t="fabbricato">Fabbricati</button>
+    </div>
+    <button class="resetf" id="resetf" style="display:none">↺ azzera filtri</button>
+    <div style="flex:1"></div>
+    <button class="btn-print" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Stampa / PDF
+    </button>
+  </div>
+
+  <div class="tbl-wrap">
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th data-s="fp" style="width:120px">Foglio · Part. <span class="ar">▾</span></th>
+          <th data-s="qual">Qualità / Categoria</th>
+          <th class="hide-sm">Ambito</th>
+          <th data-s="sup" class="num">Superficie</th>
+          <th data-s="rd" class="num hide-sm">R. Dominic.</th>
+          <th data-s="ra" class="num hide-sm">R. Agrario</th>
+          <th data-s="grp">Titolarità</th>
+          <th style="width:24px"></th>
+        </tr>
+      </thead>
+      <tbody id="body"></tbody>
+    </table>
+    <div class="tfoot" id="tfoot"></div>
+  </div>
+
+  <div class="section-lab">
+    <h2>Destinazione urbanistica — PRG (Tav. T10)</h2><span class="ln"></span>
+  </div>
+  <div class="prg-grid">
+    <div class="prg-col">
+      <h3>Usi e ambiti</h3>
+      <div class="leg"><span class="sw" style="background:#E8A33D"></span><div class="lt">Usi prevalentemente <b>residenziali</b> — tessuto consolidato e di progetto <span class="code">(artt. 19/22 NTA)</span></div></div>
+      <div class="leg"><span class="sw" style="background:#C84A3A"></span><div class="lt">Nuclei di <b>Antica Formazione — Centro Storico (A)</b> <span class="code">(art. 20 NTA)</span></div></div>
+      <div class="leg"><span class="sw" style="background:#B79BC9"></span><div class="lt">Usi per <b>attività economiche</b> (AE) <span class="code">(art. 23 NTA)</span></div></div>
+      <div class="leg"><span class="sw" style="background:#EFE6A8"></span><div class="lt">Agricolo <b>E1</b> — ambito tradizionale a buona produttività <span class="code">(artt. 24/26)</span></div></div>
+      <div class="leg"><span class="sw" style="background:#D7E3B0"></span><div class="lt">Agricolo <b>E2</b> — tutela del versante collinare <span class="code">(art. 26)</span></div></div>
+      <div class="leg"><span class="sw" style="background:#C3DCB0"></span><div class="lt">Agricolo <b>E3</b> — qualità paesistica del terrazzo collinare <span class="code">(art. 27)</span></div></div>
+    </div>
+    <div class="prg-col">
+      <h3>Pubblici · Rete ecologica · Rispetti</h3>
+      <div class="leg"><span class="sw" style="background:#9ACD7E"></span><div class="lt">Aree a <b>servizi</b> (verde/sport, istruzione, interesse comune, parcheggi) <span class="code">(art. 19 NTA)</span></div></div>
+      <div class="leg"><span class="sw" style="background:#7FA86A"></span><div class="lt"><b>Rete ecologica</b> — corridoi di connessione e <b>aree boscate</b> <span class="code">(NTA)</span></div></div>
+      <div class="leg"><span class="sw" style="background:#fff;border:1px solid #888;border-style:dashed"></span><div class="lt"><b>Fasce di rispetto</b> — viabilità/ferrovia, cimitero, pozzi idropotabili <span class="code">(art. 44)</span></div></div>
+      <div class="leg"><span class="sw" style="background:#fff;border:1.5px dashed #C84A3A"></span><div class="lt"><b>Perimetro centro abitato</b> / confini comunali <span class="code">(art. 12 L.R. 56/77)</span></div></div>
+    </div>
+    <div class="prg-note" style="grid-column:1/-1">
+      <span class="ic">⚐ Lettura della destinazione.</span> La colonna <b>Ambito</b> della tabella è derivata dalla <b>qualità catastale</b> (dato certo della visura), non dalla zona di PRG.
+      L'attribuzione puntuale della <b>zona urbanistica</b> a ciascuna particella richiede la sovrapposizione del mappale catastale sulla Tav. T10 in scala 1:5.000.
+      Per orientamento: i <b>fabbricati</b> (Fg. 9 Via Cavour, Fg. 15 Via Zoppis) ricadono nel <b>tessuto residenziale / nuclei di antica formazione</b> entro il perimetro del centro abitato; i terreni dei <b>Fg. 11–12–16–18</b> nella pianura sono prevalentemente <b>ambito agricolo (E1)</b>, con le particelle a bosco/incolto candidate alla <b>rete ecologica / aree boscate</b>; il <b>Fg. 4</b> a nord va verificato tra <b>E1 ed E2/E3</b> (fascia del terrazzo collinare). Confermare sempre su Tav. T10 prima di ogni atto o pratica.
+    </div>
+  </div>
+
+  <footer>
+    <b>Scheda generata da documentazione fornita</b> — Visure attuali per soggetto (Agenzia Entrate, Direzione Prov. Novara, atti al 30/06/2026), estratti di mappa Fg. 4/10/11/15/16/18, PRG Variante Generale art. 15 L.R. 56/77, Tav. T10.<br>
+    Particelle non site in Sizzano (Novara, Fara Novarese, Gattico-Veruno) <b>escluse</b> come richiesto. Le quote in regime di separazione dei beni e i terzi comproprietari (Guglianetti, Ponti, Fiorindo, Bombelli) sono riportati ove presenti.<br>
+    Documento di sintesi: in caso di discordanza fa fede la visura originale e la cartografia ufficiale.
+  </footer>
+</div>
+
+<script>
+/* ============ Dati: gruppi di titolarità ============ */
+const QS = {
+  qs1:{label:"2/15 + 11/45 (eredi Ponti, q. A)", prov:"Successione ex lege Ponti Imelde 22/05/2022", owners:[
+    {n:"APOSTOLO Alberto",q:"2/15"},{n:"APOSTOLO Marco",q:"2/15"},{n:"APOSTOLO Bruno",q:"11/45"},{n:"APOSTOLO Lorenzo",q:"11/45"},{n:"APOSTOLO Sergio",q:"11/45"}]},
+  qs2:{label:"2/30 + 13/45 (eredi Ponti, q. B)", prov:"Successione ex lege Ponti Imelde 22/05/2022", owners:[
+    {n:"APOSTOLO Alberto",q:"2/30"},{n:"APOSTOLO Marco",q:"2/30"},{n:"APOSTOLO Bruno",q:"13/45"},{n:"APOSTOLO Lorenzo",q:"13/45"},{n:"APOSTOLO Sergio",q:"13/45"}]},
+  qs3:{label:"6/60 + 4/15 (eredi Ponti, q. C)", prov:"Successione ex lege Ponti Imelde 22/05/2022", owners:[
+    {n:"APOSTOLO Alberto",q:"6/60"},{n:"APOSTOLO Marco",q:"6/60"},{n:"APOSTOLO Bruno",q:"4/15"},{n:"APOSTOLO Lorenzo",q:"4/15"},{n:"APOSTOLO Sergio",q:"4/15"}]},
+  qs4:{label:"6/90 + 26/90", prov:"Successione ex lege Ponti Imelde 22/05/2022", owners:[
+    {n:"APOSTOLO Alberto",q:"6/90"},{n:"APOSTOLO Bruno",q:"26/90"},{n:"APOSTOLO Lorenzo",q:"26/90"},{n:"APOSTOLO Marco",q:"6/90"},{n:"APOSTOLO Sergio",q:"26/90"}]},
+  qs5:{label:"con Guglianetti 1/2", prov:"Successione ex lege Ponti Imelde 22/05/2022", owners:[
+    {n:"GUGLIANETTI Giulio",q:"1/2",ext:1},{n:"APOSTOLO Alberto",q:"2/30"},{n:"APOSTOLO Marco",q:"2/30"},{n:"APOSTOLO Bruno",q:"11/90"},{n:"APOSTOLO Lorenzo",q:"11/90"},{n:"APOSTOLO Sergio",q:"11/90"}]},
+  qs6:{label:"con Ponti Imelde 4/6", prov:"Voltura d'ufficio 22/09/1998 (in atti 30/10/2024)", owners:[
+    {n:"APOSTOLO Alberto",q:"2/30"},{n:"APOSTOLO Bruno",q:"2/30"},{n:"APOSTOLO Lorenzo",q:"2/30"},{n:"APOSTOLO Marco",q:"2/30"},{n:"APOSTOLO Sergio",q:"2/30"},{n:"PONTI Imelde",q:"4/6",ext:1}]},
+  qs7:{label:"6/60 + 16/60", prov:"Rettifica intestazione 22/05/2022 (in atti 13/12/2024)", owners:[
+    {n:"APOSTOLO Alberto",q:"6/60"},{n:"APOSTOLO Bruno",q:"16/60"},{n:"APOSTOLO Lorenzo",q:"16/60"},{n:"APOSTOLO Marco",q:"6/60"},{n:"APOSTOLO Sergio",q:"16/60"}]},
+  qs8:{label:"Bruno · Lorenzo · Sergio (1/3)", prov:"Successione ex lege Ponti Imelde 22/05/2022", owners:[
+    {n:"APOSTOLO Bruno",q:"1/3"},{n:"APOSTOLO Lorenzo",q:"1/3"},{n:"APOSTOLO Sergio",q:"1/3"}]},
+  qs9:{label:"Bruno · Lorenzo · Sergio (1000/3000)", prov:"Successione ex lege Ponti Imelde 22/05/2022", owners:[
+    {n:"APOSTOLO Bruno",q:"1000/3000"},{n:"APOSTOLO Lorenzo",q:"1000/3000"},{n:"APOSTOLO Sergio",q:"1000/3000"}]},
+  qs10:{label:"Bruno 1/1 (sep. beni)", prov:"Compravendite (2002 · 2005 · 2006)", owners:[
+    {n:"APOSTOLO Bruno",q:"1/1 — sep. beni"}]}
+};
+
+/* ============ Terreni ============ */
+/* sup = m²; porz = dettaglio porzioni se >1 */
+const T = [
+  // gruppo qs1 (8.43.74)
+  {fg:4,p:"24",sup:2760,rd:"23,52",ra:"17,82",qual:"Seminativo irriguo",cls:"U",grp:"qs1"},
+  {fg:14,p:"245",sup:13290,rd:"109,82",ra:"72,07",qual:"Seminativo",cls:"01",grp:"qs1"},
+  {fg:14,p:"246",sup:12910,rd:"106,68",ra:"70,01",qual:"Seminativo",cls:"01",grp:"qs1"},
+  {fg:14,p:"257",sup:1450,rd:"12,36",ra:"9,36",qual:"Seminativo irriguo",cls:"U",grp:"qs1"},
+  {fg:16,p:"125",sup:1090,rd:"0,90",ra:"0,06",qual:"Bosco ceduo",cls:"01",grp:"qs1"},
+  {fg:16,p:"166",sup:8860,rd:"75,51",ra:"57,20",qual:"Seminativo irriguo / Prato irr. arbor.",cls:"U",grp:"qs1",porz:"AA Semin. irriguo 8.512 · AB Prato irr. arbor. 348"},
+  {fg:16,p:"203",sup:1170,rd:"9,56",ra:"6,26",qual:"Seminativo / Prato",cls:"01",grp:"qs1",porz:"AA Seminativo 1.100 · AB Prato 70"},
+  {fg:16,p:"302",sup:4580,rd:"37,85",ra:"24,84",qual:"Seminativo",cls:"01",grp:"qs1"},
+  {fg:16,p:"345",sup:6520,rd:"53,88",ra:"35,36",qual:"Seminativo arborato",cls:"01",grp:"qs1"},
+  {fg:16,p:"346",sup:6520,rd:"52,71",ra:"39,69",qual:"Incolto / Bosco / Semin. irriguo",cls:"U·01",grp:"qs1",porz:"AA Incolto prod. 51 · AB Bosco misto 338 · AC Semin. irriguo 6.131"},
+  {fg:16,p:"347",sup:440,rd:"0,57",ra:"0,14",qual:"Bosco misto",cls:"01",grp:"qs1"},
+  {fg:16,p:"348",sup:220,rd:"0,28",ra:"0,07",qual:"Bosco misto",cls:"01",grp:"qs1"},
+  {fg:16,p:"350",sup:4370,rd:"37,24",ra:"28,21",qual:"Seminativo irriguo / Prato irr. arb.",cls:"U",grp:"qs1",porz:"AA Semin. irriguo 4.303 · AB Prato irr. arbor. 67"},
+  {fg:16,p:"354",sup:8760,rd:"74,65",ra:"56,55",qual:"Seminativo irriguo",cls:"U",grp:"qs1"},
+  {fg:16,p:"376",sup:4015,rd:"33,18",ra:"21,77",qual:"Seminativo arborato",cls:"01",grp:"qs1"},
+  {fg:15,p:"563",sup:95,rd:"—",ra:"—",qual:"Incolto sterile",cls:"—",grp:"qs1"},
+  {fg:14,p:"445",sup:7324,rd:"60,52",ra:"39,72",qual:"Seminativo",cls:"01",grp:"qs1"},
+  // gruppo qs4 (0.62.80)
+  {fg:11,p:"155",sup:1900,rd:"14,72",ra:"9,81",qual:"Seminativo",cls:"02",grp:"qs4"},
+  {fg:11,p:"356",sup:670,rd:"5,19",ra:"3,46",qual:"Seminativo",cls:"02",grp:"qs4"},
+  {fg:14,p:"143",sup:2260,rd:"18,68",ra:"12,26",qual:"Seminativo",cls:"01",grp:"qs4"},
+  {fg:14,p:"150",sup:1450,rd:"12,36",ra:"9,36",qual:"Seminativo irriguo",cls:"U",grp:"qs4"},
+  // gruppo qs5 (0.01.70)
+  {fg:10,p:"152",sup:170,rd:"0,22",ra:"0,05",qual:"Bosco misto",cls:"01",grp:"qs5"},
+  // gruppo qs6 (0.11.10)
+  {fg:11,p:"355",sup:1110,rd:"8,60",ra:"5,73",qual:"Seminativo / Semin. arborato",cls:"02",grp:"qs6",porz:"AA Seminativo 600 · AB Semin. arborato 510"},
+  // gruppo qs2 (1.82.70)
+  {fg:4,p:"25",sup:3320,rd:"28,29",ra:"21,43",qual:"Seminativo irriguo",cls:"U",grp:"qs2"},
+  {fg:4,p:"373",sup:2170,rd:"11,21",ra:"10,65",qual:"Seminativo",cls:"03",grp:"qs2"},
+  {fg:4,p:"374",sup:3840,rd:"32,72",ra:"24,79",qual:"Seminativo irriguo",cls:"U",grp:"qs2"},
+  {fg:4,p:"375",sup:2310,rd:"19,68",ra:"14,91",qual:"Seminativo irriguo",cls:"U",grp:"qs2"},
+  {fg:4,p:"376",sup:640,rd:"5,45",ra:"4,13",qual:"Seminativo irriguo",cls:"U",grp:"qs2"},
+  {fg:4,p:"378",sup:2440,rd:"20,79",ra:"15,75",qual:"Seminativo irriguo",cls:"U",grp:"qs2"},
+  {fg:4,p:"379",sup:3060,rd:"26,08",ra:"19,75",qual:"Seminativo irriguo",cls:"U",grp:"qs2"},
+  {fg:4,p:"380",sup:490,rd:"4,18",ra:"3,16",qual:"Seminativo irriguo",cls:"U",grp:"qs2"},
+  // gruppo qs7 (0.03.90)
+  {fg:9,p:"367",sup:130,rd:"—",ra:"—",qual:"Incolto sterile (corte)",cls:"—",grp:"qs7"},
+  {fg:9,p:"368",sup:260,rd:"2,15",ra:"1,41",qual:"Seminativo arborato",cls:"01",grp:"qs7"},
+  // gruppo qs8 (0.02.70)
+  {fg:18,p:"94",sup:270,rd:"1,61",ra:"1,04",qual:"Seminativo / Bosco ceduo",cls:"02·01",grp:"qs8",porz:"AA Seminativo 200 · AB Bosco ceduo 70"},
+  // gruppo qs9 (2.03.20)
+  {fg:14,p:"151",sup:3000,rd:"24,79",ra:"16,27",qual:"Seminativo",cls:"01",grp:"qs9"},
+  {fg:14,p:"259",sup:1330,rd:"11,33",ra:"8,59",qual:"Prato irr. arb. / Semin. irriguo",cls:"U",grp:"qs9",porz:"AA Prato irr. arbor. 127 · AB Semin. irriguo 1.203"},
+  {fg:15,p:"131",sup:1400,rd:"11,93",ra:"9,04",qual:"Seminativo irriguo",cls:"U",grp:"qs9"},
+  {fg:15,p:"132",sup:1230,rd:"10,48",ra:"7,94",qual:"Seminativo irriguo",cls:"U",grp:"qs9"},
+  {fg:16,p:"204",sup:1250,rd:"9,14",ra:"6,78",qual:"Semin. irriguo / Bosco misto",cls:"U·01",grp:"qs9",porz:"AA Semin. irriguo 1.041 · AB Bosco misto 209"},
+  {fg:18,p:"29",sup:560,rd:"4,77",ra:"3,62",qual:"Seminativo irriguo",cls:"U",grp:"qs9"},
+  {fg:18,p:"52",sup:3700,rd:"31,53",ra:"23,89",qual:"Seminativo irriguo",cls:"U",grp:"qs9"},
+  {fg:18,p:"95",sup:7850,rd:"66,89",ra:"50,68",qual:"Seminativo irriguo",cls:"U",grp:"qs9"},
+  // gruppo qs10 — Bruno 1/1
+  {fg:16,p:"207",sup:3330,rd:"27,52",ra:"18,06",qual:"Seminativo",cls:"01",grp:"qs10"},
+  {fg:16,p:"311",sup:310,rd:"2,08",ra:"1,28",qual:"Prato",cls:"01",grp:"qs10"},
+  {fg:15,p:"564",sup:151,rd:"—",ra:"—",qual:"Area rurale (corte)",cls:"01",grp:"qs10"},
+  {fg:16,p:"135",sup:1580,rd:"13,06",ra:"8,57",qual:"Seminativo",cls:"01",grp:"qs10"},
+  {fg:16,p:"208",sup:5130,rd:"35,81",ra:"26,40",qual:"Bosco misto / Semin. irriguo",cls:"01·U",grp:"qs10",porz:"AA Bosco misto 1.093 · AB Semin. irriguo 4.037"},
+  {fg:16,p:"386",sup:200,rd:"0,26",ra:"0,06",qual:"Pascolo",cls:"U",grp:"qs10"},
+  {fg:12,p:"92",sup:2140,rd:"18,24",ra:"13,82",qual:"Seminativo irriguo",cls:"U",grp:"qs10"}
+];
+
+/* ============ Fabbricati ============ */
+const F = [
+  {fg:9,p:"342",cat:"A/3",cls:"2",cons:"8,5 vani",sup:250,supn:248,rend:"482,89",ind:"Via Camillo Cavour 19 — Piano T-1-2-S1",grp:"qs2"},
+  {fg:15,p:"562/2",cat:"A/7",cls:"1",cons:"6,5 vani",sup:167,supn:159,rend:"671,39",ind:"Via Benvenuto Zoppis 17 — Piano 1",grp:"qs1",rur:1},
+  {fg:15,p:"562/3",cat:"C/2",cls:"2",cons:"128 m²",sup:147,supn:null,rend:"99,16",ind:"Via Benvenuto Zoppis 17 — Piano T",grp:"qs1",rur:1},
+  {fg:9,p:"140",cat:"D/1",cls:"—",cons:"a stima",sup:null,supn:null,rend:"1.239,50",ind:"Via Camillo Cavour 19 — Lotto RR, Piano T-1",grp:"qs3"},
+  {fg:15,p:"565",cat:"D/1",cls:"—",cons:"a stima",sup:null,supn:null,rend:"3.784,00",ind:"Via Benvenuto Zoppis 17 — Piano T",grp:"qs10",rur:1}
+];
+
+/* foglio → carattere PRG orientativo (indicativo) */
+const FZ = {
+  4:"Agric. E1/E2-E3 (verif.)", 9:"Centro / residenziale", 10:"Agricolo E1 (verif.)",
+  11:"Agricolo E1 (verif.)", 12:"Agricolo E1 (verif.)", 15:"Centro / residenziale",
+  16:"Agric. E1 + rete ecol.", 18:"Agricolo E1 (verif.)"
+};
+
+/* ============ helpers ============ */
+const fmtArea = m=>{ if(m==null) return "—"; const ha=Math.floor(m/10000),rest=m%10000,are=Math.floor(rest/100),ca=rest%100;
+  if(ha>0) return ha+"."+String(are).padStart(2,"0")+"."+String(ca).padStart(2,"0")+" <small>ha</small>";
+  return m.toLocaleString("it-IT")+" <small>m²</small>"; };
+const fmtAreaPlain=m=>{ if(m==null) return "—"; const ha=Math.floor(m/10000),rest=m%10000,are=Math.floor(rest/100),ca=rest%100;
+  if(ha>0) return ha+"."+String(are).padStart(2,"0")+"."+String(ca).padStart(2,"0")+" ha";
+  return m.toLocaleString("it-IT")+" m²"; };
+const eur=v=>v==="—"?"—":"€ "+v;
+const ambitoOf=q=>{ const s=q.toLowerCase();
+  if(s.includes("bosco")||s.includes("incolto")) return {k:"bosco",t:"Bosco / Incolto"};
+  return {k:"agri",t:"Agricolo"}; };
+
+/* ============ stato ============ */
+let state={tipo:"all",fg:null,q:"",sort:"fp",dir:1,open:new Set()};
+
+/* ============ riepilogo ============ */
+function renderSummary(){
+  const totSup=T.reduce((a,r)=>a+r.sup,0);
+  const sum=document.getElementById("summary");
+  sum.innerHTML=`
+    <div class="scell"><div class="lab">Superficie terreni</div><div class="val">${fmtAreaPlain(totSup).replace(' ha',' <small>ha</small>')}</div></div>
+    <div class="scell"><div class="lab">Particelle terreno</div><div class="val">${T.length}</div></div>
+    <div class="scell"><div class="lab">Unità fabbricati</div><div class="val">${F.length}</div></div>
+    <div class="scell"><div class="lab">Rendita fabbricati</div><div class="val">6.276<small>,94 €</small></div></div>
+    <div class="scell"><div class="lab">Redd. dominicale</div><div class="val">1.169<small>,0 €</small></div></div>
+    <div class="scell"><div class="lab">Redd. agrario</div><div class="val">831<small>,8 €</small></div></div>`;
+}
+
+/* ============ fogli navigator ============ */
+function renderFogli(){
+  const fogli=[...new Set([...T.map(r=>r.fg),...F.map(r=>r.fg)])].sort((a,b)=>a-b);
+  const cont=document.getElementById("fogli");
+  cont.innerHTML=fogli.map(fg=>{
+    const nt=T.filter(r=>r.fg===fg).length, nf=F.filter(r=>r.fg===fg).length;
+    const parts=[]; if(nt)parts.push(nt+" terr."); if(nf)parts.push(nf+" fabbr.");
+    return `<button class="ftile ${state.fg===fg?'on':''}" data-fg="${fg}">
+      <span class="corner">I767</span>
+      <div class="fnum">Foglio</div><div class="fno">${fg}</div>
+      <div class="fcount">${parts.join(" · ")}</div>
+      <div class="fzone">${FZ[fg]||""}</div></button>`;
+  }).join("");
+  cont.querySelectorAll(".ftile").forEach(b=>b.onclick=()=>{
+    const fg=+b.dataset.fg; state.fg=state.fg===fg?null:fg; render();
+  });
+}
+
+/* ============ filtro + ordina ============ */
+function getRows(){
+  let rows=[];
+  if(state.tipo!=="fabbricato") rows=rows.concat(T.map(r=>({...r,_t:"terreno"})));
+  if(state.tipo!=="terreno") rows=rows.concat(F.map(r=>({...r,_t:"fabbricato"})));
+  if(state.fg!=null) rows=rows.filter(r=>r.fg===state.fg);
+  if(state.q){
+    const q=state.q.toLowerCase();
+    rows=rows.filter(r=>{
+      const g=QS[r.grp]; const ownStr=g.owners.map(o=>o.n).join(" ");
+      const hay=[r.fg,r.p,r.qual||"",r.cat||"",r.ind||"",g.label,ownStr,r.porz||""].join(" ").toLowerCase();
+      return hay.includes(q);
+    });
+  }
+  const dir=state.dir;
+  rows.sort((a,b)=>{
+    let x,y;
+    switch(state.sort){
+      case "sup": x=a.sup==null?-1:a.sup; y=b.sup==null?-1:b.sup; break;
+      case "rd": x=parseFloat((a.rd||"0").replace(',','.'))||0; y=parseFloat((b.rd||"0").replace(',','.'))||0; break;
+      case "ra": x=parseFloat((a.ra||"0").replace(',','.'))||0; y=parseFloat((b.ra||"0").replace(',','.'))||0; break;
+      case "qual": x=(a.qual||a.cat||"").toLowerCase(); y=(b.qual||b.cat||"").toLowerCase(); break;
+      case "grp": x=a.grp; y=b.grp; break;
+      default: // fp
+        if(a.fg!==b.fg) return (a.fg-b.fg)*dir;
+        x=parseInt(a.p)||0; y=parseInt(b.p)||0;
+    }
+    if(x<y) return -1*dir; if(x>y) return 1*dir; return 0;
+  });
+  return rows;
+}
+
+/* ============ render tabella ============ */
+function render(){
+  renderFogli();
+  document.getElementById("resetf").style.display=(state.fg!=null||state.q||state.tipo!=="all")?"inline-block":"none";
+  const rows=getRows();
+  const body=document.getElementById("body");
+  if(!rows.length){ body.innerHTML=`<tr><td colspan="8"><div class="nores">Nessuna particella per i filtri attivi.</div></td></tr>`;
+    document.getElementById("tfoot").innerHTML=""; return; }
+
+  let html="", sumSup=0, anyTer=false;
+  rows.forEach((r,i)=>{
+    const id=r._t[0]+r.fg+"-"+r.p;
+    const isOpen=state.open.has(id);
+    if(r._t==="terreno"){ sumSup+=r.sup; anyTer=true; }
+    if(r._t==="terreno"){
+      const amb=ambitoOf(r.qual);
+      html+=`<tr class="${isOpen?'open':''}" data-id="${id}">
+        <td><span class="fp">${r.fg}<span class="sep">·</span>${r.p}</span></td>
+        <td class="qual">${r.qual} ${r.cls!=="—"?`<span class="cls">cl. ${r.cls}</span>`:""}</td>
+        <td class="hide-sm"><span class="chip ${amb.k}">${amb.t}</span></td>
+        <td class="num">${fmtArea(r.sup)}</td>
+        <td class="num hide-sm">${eur(r.rd)}</td>
+        <td class="num hide-sm">${eur(r.ra)}</td>
+        <td><span class="gtag">${QS[r.grp].label.split(" (")[0]}</span></td>
+        <td><span class="exp-ind">▸</span></td></tr>`;
+    } else {
+      html+=`<tr class="${isOpen?'open':''}" data-id="${id}">
+        <td><span class="fp">${r.fg}<span class="sep">·</span>${r.p}</span></td>
+        <td class="qual"><b>${r.cat}</b>${r.cls!=="—"?` <span class="cls">cl. ${r.cls}</span>`:""} · ${r.cons}${r.rur?` <span class="cls">· rurale</span>`:""}</td>
+        <td class="hide-sm"><span class="chip edif">Edificato</span></td>
+        <td class="num">${r.sup?r.sup.toLocaleString("it-IT")+" <small>m²</small>":"—"}</td>
+        <td class="num hide-sm" colspan="2" style="text-align:right">Rendita ${eur(r.rend)}</td>
+        <td><span class="gtag">${QS[r.grp].label.split(" (")[0]}</span></td>
+        <td><span class="exp-ind">▸</span></td></tr>`;
+    }
+    if(isOpen) html+=detailRow(r);
+  });
+  body.innerHTML=html;
+
+  body.querySelectorAll("tr[data-id]").forEach(tr=>tr.onclick=()=>{
+    const id=tr.dataset.id;
+    if(state.open.has(id)) state.open.delete(id); else state.open.add(id);
+    render();
+  });
+
+  const cnt=rows.filter(r=>r._t==="terreno").length, cntF=rows.filter(r=>r._t==="fabbricato").length;
+  const parts=[]; if(cnt)parts.push(cnt+" terreni"); if(cntF)parts.push(cntF+" fabbricati");
+  document.getElementById("tfoot").innerHTML=
+    `<span class="muted">${parts.join(" · ")} mostrati</span>`+
+    (anyTer?`<span class="ftot">Σ superficie filtrata: ${fmtAreaPlain(sumSup)}</span>`:`<span></span>`);
+}
+
+function detailRow(r){
+  const g=QS[r.grp];
+  const owners=g.owners.map(o=>`<div class="ow"><span class="nm ${o.ext?'ext':''}">${o.n}</span><span class="q">${o.q}</span></div>`).join("");
+  let left;
+  if(r._t==="terreno"){
+    left=`<div class="det-meta">
+      <div><b>Superficie:</b> ${fmtAreaPlain(r.sup)} (${r.sup.toLocaleString("it-IT")} m²)</div>
+      <div><b>Reddito dominicale:</b> ${eur(r.rd)} &nbsp; <b>agrario:</b> ${eur(r.ra)}</div>
+      <div><b>Ambito (da catasto):</b> ${ambitoOf(r.qual).t} &nbsp;|&nbsp; <b>PRG Fg.${r.fg}:</b> ${FZ[r.fg]||"verif. su Tav. T10"}</div>
+      ${r.porz?`<div style="margin-top:6px"><b>Porzioni:</b><div class="porz-list"><span class="pq">${r.porz.replace(/·/g,'<br>·')}</span></div></div>`:""}
+    </div>`;
+  } else {
+    left=`<div class="det-meta">
+      <div><b>Ubicazione:</b> ${r.ind}</div>
+      <div><b>Categoria:</b> ${r.cat}${r.cls!=="—"?" cl. "+r.cls:""} · <b>Consistenza:</b> ${r.cons}</div>
+      ${r.sup?`<div><b>Sup. catastale:</b> ${r.sup} m²${r.supn?` (escl. aree scoperte: ${r.supn} m²)`:""}</div>`:""}
+      <div><b>Rendita:</b> ${eur(r.rend)}${r.rur?` &nbsp;<span style="color:var(--bosco)">· requisiti ruralità dichiarati</span>`:""}</div>
+      <div><b>PRG:</b> tessuto residenziale / centro abitato — verif. Tav. T10</div>
+    </div>`;
+  }
+  return `<tr class="detail"><td colspan="8"><div class="detail-in">
+    <div class="det-block"><div class="dh">Dettaglio</div>${left}
+      <div class="prov"><b>Provenienza:</b> ${g.prov}</div></div>
+    <div class="det-block"><div class="dh">Titolarità — ${g.label}</div>
+      <div class="owners">${owners}</div></div>
+  </div></td></tr>`;
+}
+
+/* ============ eventi ============ */
+document.getElementById("tipoSeg").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#tipoSeg button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); state.tipo=b.dataset.t; render();
+});
+document.getElementById("q").oninput=e=>{ state.q=e.target.value.trim(); render(); };
+document.getElementById("resetf").onclick=()=>{
+  state.fg=null; state.q=""; state.tipo="all"; document.getElementById("q").value="";
+  document.querySelectorAll("#tipoSeg button").forEach((x,i)=>x.classList.toggle("on",i===0));
+  render();
+};
+document.querySelectorAll("thead th[data-s]").forEach(th=>th.onclick=()=>{
+  const s=th.dataset.s;
+  if(state.sort===s) state.dir*=-1; else { state.sort=s; state.dir=1; }
+  render();
+});
+
+renderSummary();
+render();
+</script>
+</body>
+</html>
